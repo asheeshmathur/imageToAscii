@@ -11,9 +11,14 @@ root = tk.Tk()
 root.title("Isha's Cornucopia")
 # Set the geometry
 root.geometry("900x650")
-asciiText = tk.StringVar(value='ASCII Part will coe here')
+asciiText = tk.StringVar(value='ASCII Part will come here')
 imageFileName = tk.StringVar(value="Dog.jpg")
 asciiFileName = tk.StringVar(value="")
+radioVar = tk.StringVar(value="")
+
+
+def showFileDialog():
+    pass
 
 
 def generate(fileName):
@@ -21,12 +26,12 @@ def generate(fileName):
     # Check for valid image file name
     # set scale default as 0.43 which suits
     scale = 0.43
-    aimg = prcs.covertImageToAscii(fileName.get(),"B", 80, scale)
+    aimg = prcs.covertImageToAscii(fileName.get(), "B", 80, scale)
     # Explode to line -
 
     for row in aimg:
-        scrolledText.insert(END, row+'\n')
-        previewText.insert(END, row+'\n')
+        scrolledText.insert(END, row + '\n')
+        previewText.insert(END, row + '\n')
     # scrolledText.config(text=convertedText)
     # previewText.config(text=convertedText)
 
@@ -43,10 +48,29 @@ scrolledText.pack(side=LEFT, padx=25, pady=5)
 previewText = Text(frameThree, font=('Courier', 2), width=45, height=21, wrap=NONE)
 previewText.pack(side=LEFT, padx=25, pady=5)
 # Buttons
+imageTobeConverted = Button(frameOne, text="Generate", command=lambda: generate(imageFileName))
 generateBtn = Button(frameFour, text="Generate", command=lambda: generate(imageFileName))
-saveFileBtn = Button(frameFour, text="Save To" , command=lambda: saveTo())
+saveFileBtn = Button(frameFour, text="Save To", command=lambda: saveTo())
 generateBtn.pack(side=LEFT, pady=5)
 saveFileBtn.pack(side=LEFT, pady=5)
+# Radio Buttons to select entry for image path or file dialog
+selectImage = Label(frameOne, text="Choose Image for Ascii Conversion").pack(side=LEFT)
+entry = tk.Entry(frameOne, textvariable=imageFileName)
+# fDialog = filedialog.askopenfilename()
+entryRadio = Radiobutton(
+    frameOne,
+    value="tb",
+    text="via Text Box",
+    variable=radioVar,
+    command=lambda: entry.pack(side=LEFT))
+entryRadio.pack(side=LEFT)
+
+showFileDialogRadio = Radiobutton(
+    frameOne,
+    value="fd",
+    text="via File Dialog",
+    variable=radioVar,
+    command=lambda: showFileDialog()).pack(side=LEFT)
 
 # Pack these frames
 frameOne.pack(fill=BOTH, expand=True)
@@ -59,7 +83,7 @@ def saveTo():
     global scrolledText, imageFileName
     asciiFileName = filedialog.asksaveasfilename()
     file = open(asciiFileName, 'a+')
-    file.write(scrolledText.get("1.0",END))
+    file.write(scrolledText.get("1.0", END))
     file.close()
 
 

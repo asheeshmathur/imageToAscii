@@ -43,17 +43,21 @@ def covertImageToAscii(fileName, colorCode, cols, scale):
     global gscale
 
     # open image and convert to grayscale based on color choice
-    # Split base on channel
-    red, green, blue = Image.open(fileName).split()
-    if (colorCode == "B" or colorCode == "b"):
-        image = blue
-    elif (colorCode == "R" or colorCode == "r"):
-        image = red
-    elif (colorCode == "G" or colorCode == "g"):
-        image = green
+    # Check & Split base on channels
+    tempImage = Image.open(fileName)
+    if (("R", "G", "B") != tempImage.getbands()):
+        image = tempImage.convert('L')
     else:
-        image = Image.open(fileName).convert('L')
+        red, green, blue = tempImage.split()
+        # Iterate to check for color code
+        if (colorCode == "B" or colorCode == "b"):
+            image = blue
+        elif (colorCode == "R" or colorCode == "r"):
+            image = red
+        elif (colorCode == "G" or colorCode == "g"):
+            image = green
 
+    image = Image.open(fileName).convert('L')
     # Extract & store dimensions
     W, H = image.size[0], image.size[1]
 
@@ -128,7 +132,6 @@ def main():
 
     # set cols
     cols = 80
-
 
     print('Generating ASCII art...')
 
