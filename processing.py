@@ -3,12 +3,15 @@ Core Processing Module to convert an RGB image to corresponding Grayscale.
 Use a tile based approach to convert it to an ASCII character.
 A tile composed of collection of Pixels (rows & cols) to be converted to Ascii character
 Instead of converting individual pixel.
+To match the image and font aspect ratio.
 
 Using default 80, as columns for ascii art, this helps in better ascii images.
 It's configurable
 
 Uses numpy  for arrays
 
+Reference :
+https://github.com/electronut/pp/blob/master/ascii/ascii.py
 '''
 import numpy as np
 from PIL import Image
@@ -20,7 +23,7 @@ from PIL import Image
 gscale = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. "
 
 """
-Given PIL Image, returns average value of grayscale value
+Given PIL Image, computes returns average value average brightness
 """
 
 
@@ -57,7 +60,6 @@ def covertImageToAscii(fileName, colorCode, cols, scale):
         elif (colorCode == "G" or colorCode == "g"):
             image = green
 
-    image = Image.open(fileName).convert('L')
     # Extract & store dimensions
     W, H = image.size[0], image.size[1]
 
@@ -120,36 +122,3 @@ def covertImageToAscii(fileName, colorCode, cols, scale):
     # return txt image (row and columns matrix
     return aimg
 
-
-# main() function
-def main():
-    # set output file
-    outFile = 'out.txt'
-
-    # set scale default as 0.43 which suits
-    # a Courier font
-    scale = 0.43
-
-    # set cols
-    cols = 80
-
-    print('Generating ASCII art...')
-
-    # convert image to ascii txt
-    aimg = covertImageToAscii("Dog.jpg", "B", cols, scale)
-
-    # Write this output to a stream
-    f = open(outFile, 'w')
-
-    # write to file
-    for row in aimg:
-        f.write(row + '\n')
-
-    # cleanup
-    f.close()
-    print("ASCII art written to %s" % outFile)
-
-
-# call main
-if __name__ == '__main__':
-    main()

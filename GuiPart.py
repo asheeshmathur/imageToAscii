@@ -12,21 +12,23 @@ root.title("Isha's Cornucopia")
 # Set the geometry
 root.geometry("900x650")
 asciiText = tk.StringVar(value='ASCII Part will come here')
-imageFileName = tk.StringVar(value="Dog.jpg")
+imageFileName = tk.StringVar(value="")
 asciiFileName = tk.StringVar(value="")
-radioVar = tk.StringVar(value="")
+radioVar = tk.StringVar()
 
 
 def showFileDialog():
-    pass
+    global imageFileName, entry
+    entry.pack_forget()
+    imageFileName = filedialog.askopenfilename()
 
 
-def generate(fileName):
-    global scrolledText
+def generate():
+    global scrolledText, imageFileName
     # Check for valid image file name
     # set scale default as 0.43 which suits
     scale = 0.43
-    aimg = prcs.covertImageToAscii(fileName.get(), "B", 80, scale)
+    aimg = prcs.covertImageToAscii(imageFileName.get(), "B", 80, scale)
     # Explode to line -
 
     for row in aimg:
@@ -48,8 +50,8 @@ scrolledText.pack(side=LEFT, padx=25, pady=5)
 previewText = Text(frameThree, font=('Courier', 2), width=45, height=21, wrap=NONE)
 previewText.pack(side=LEFT, padx=25, pady=5)
 # Buttons
-imageTobeConverted = Button(frameOne, text="Generate", command=lambda: generate(imageFileName))
-generateBtn = Button(frameFour, text="Generate", command=lambda: generate(imageFileName))
+# imageTobeConverted = Button(frameOne, text="Generate", command=lambda: generate(imageFileName))
+generateBtn = Button(frameFour, text="Generate", command=lambda: generate())
 saveFileBtn = Button(frameFour, text="Save To", command=lambda: saveTo())
 generateBtn.pack(side=LEFT, pady=5)
 saveFileBtn.pack(side=LEFT, pady=5)
@@ -62,7 +64,7 @@ entryRadio = Radiobutton(
     value="tb",
     text="via Text Box",
     variable=radioVar,
-    command=lambda: entry.pack(side=LEFT))
+    command=lambda: entry.pack(side=LEFT,pady=10))
 entryRadio.pack(side=LEFT)
 
 showFileDialogRadio = Radiobutton(
