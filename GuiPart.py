@@ -20,7 +20,8 @@ radioVar = tk.StringVar()
 def showFileDialog():
     global imageFileName, entry
     entry.pack_forget()
-    imageFileName = filedialog.askopenfilename()
+    fileName = filedialog.askopenfilename()
+    imageFileName.set(fileName)
 
 
 def generate():
@@ -28,7 +29,7 @@ def generate():
     # Check for valid image file name
     # set scale default as 0.43 which suits
     scale = 0.43
-    aimg = prcs.covertImageToAscii(imageFileName.get(), "B", 80, scale)
+    aimg = prcs.covertImageToAscii(imageFileName.get(), "B", 100, scale)
     # Explode to line -
 
     for row in aimg:
@@ -95,7 +96,6 @@ Image to ascii art display
 
 
 def asciiArt():
-    print("I am in asciiArt")
     global scrolledText, root, previewText
     root.mainloop()
     # Add a Scrollbar(horizontal)
@@ -112,7 +112,6 @@ def asciiArt():
 
 def main():
     global root
-    print("About Launch")
     asciiArt()
     root.mainloop()
 
