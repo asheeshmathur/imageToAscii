@@ -43,7 +43,7 @@ Given Image and its dimensions (rows, cols) returns an m*n list of Images
 """
 
 
-def covertImageToAscii(fileName, colorCode, cols, scale):
+def covertImageToAscii(fileName, colorCode, cols, scale, charList):
     # declare globals
     global gscale
 
@@ -116,7 +116,7 @@ def covertImageToAscii(fileName, colorCode, cols, scale):
             avg = int(getAverageL(img))
 
             # look up ascii char
-            gsval = gscale[int((avg * 69) / 255)]
+            gsval = charList[int((avg * 69) / 255)]
 
             # append ascii char to string
             aimg[j] += gsval
