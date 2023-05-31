@@ -11,6 +11,8 @@ It's configurable
 Uses numpy  for arrays
 
 Reference :
+http://paulbourke.net/dataformats/asciiart/
+https://afsanchezsa.github.io/vc/docs/workshops/w1_3
 https://github.com/electronut/pp/blob/master/ascii/ascii.py
 '''
 import numpy as np
