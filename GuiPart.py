@@ -49,10 +49,14 @@ def generate():
     # Check for valid image file name
     # set scale default as 0.43 which suits
     scale = 0.43
+    # Get Selected Font Size
     fontTwo = fntSize.get()
-    print("font Real ", fontTwo)
+
+    # Get List of Character
+    charList=asciiText.get()
+
     # Receives list of characters
-    aimg = prcs.covertImageToAscii(imageFileName.get(), "B", 100, scale)
+    aimg = prcs.covertImageToAscii(imageFileName.get(), "B", 80, scale,charList)
     scrolledText.config(font=('Courier', fontTwo))
     scrolledText.delete("1.0", "end")
     previewText.delete("1.0", "end")
