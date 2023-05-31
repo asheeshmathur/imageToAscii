@@ -4,7 +4,6 @@ Invokes the processing part, core engine for image processing
 
 It's configurable
 
-
 Reference :
 http://paulbourke.net/dataformats/asciiart/
 https://afsanchezsa.github.io/vc/docs/workshops/w1_3
@@ -23,8 +22,10 @@ root = tk.Tk()
 root.title("Isha's Cornucopia")
 # Set the geometry
 root.geometry("900x650")
+# Set Resizable false
 root.resizable(False, False)
 
+# Default list of characters to be used, use can provide his own
 asciiText = tk.StringVar(value="$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. ")
 imageFileName = tk.StringVar(value="")
 asciiFileName = tk.StringVar(value="")
@@ -34,6 +35,8 @@ radioVar = tk.StringVar()
 charHeight = tk.IntVar(value=8)
 charWidth = tk.IntVar(value=4)
 fntSize = tk.IntVar(value=12)
+
+
 def showFileDialog():
     global imageFileName, entry
     entry.grid_forget()
@@ -57,6 +60,7 @@ def generate():
     for row in aimg:
         scrolledText.insert(END, row + '\n')
         previewText.insert(END, row + '\n')
+
 
 # Define Four Frames
 frameOne = ttk.Frame(root, width=800, height=20, borderwidth=5, relief=tk.GROOVE)
@@ -84,22 +88,27 @@ showFileDialogRadio = Radiobutton(
     variable=radioVar,
     command=lambda: showFileDialog()).grid(row=0, column=2, pady=14)
 
-
 heightLabel = ttk.Label(frameOne, text="Height")
 heightLabel.grid(row=1, column=0, sticky=W)
-heightEntry = ttk.Entry(frameOne, textvariable=charHeight, width=2).grid(row=1, column=1,sticky=W)
+heightEntry = ttk.Entry(frameOne, textvariable=charHeight, width=2).grid(row=1, column=1, sticky=W)
 
 widthLabel = ttk.Label(frameOne, text="Width")
 widthLabel.grid(row=1, column=2, sticky=W)
-widthEntry = ttk.Entry(frameOne, width=2,textvariable=charWidth)
-widthEntry.grid(row=1, column=3 ,sticky=W)
+widthEntry = ttk.Entry(frameOne, width=2, textvariable=charWidth)
+widthEntry.grid(row=1, column=3, sticky=W)
 
 fontSize = ttk.Label(frameOne, text="Font Size")
 fontSize.grid(row=1, column=4, sticky=W)
 fontEntry = ttk.Entry(frameOne, width=2, textvariable=fntSize).grid(row=1, column=5)
 
+# Widgets to accept set of characters
+listOfCharacters = ttk.Label(frameTwo, text="Input List of Characters to Used for Conversion - Preferably 70").grid(
+    row=0, column=0,pady=10,sticky=W)
+charListEntry = ttk.Entry(frameTwo, width=60, textvariable=asciiText).grid(row=1, column=0, sticky=EW)
+
+
 hScrollBar = Scrollbar(frameThree, orient='horizontal')
-scrolledText = st.ScrolledText(frameThree, xscrollcommand=hScrollBar.set)
+scrolledText = st.ScrolledText(frameThree,wrap=NONE, xscrollcommand=hScrollBar.set)
 
 hScrollBar.config(command=scrolledText.xview)
 
