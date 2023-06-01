@@ -4,7 +4,9 @@ Invokes the processing part, core engine for image processing
 
 It's configurable
 
-Reference :
+For finer details of core processing, please refer to processiing.py
+
+References :
 http://paulbourke.net/dataformats/asciiart/
 https://afsanchezsa.github.io/vc/docs/workshops/w1_3
 https://github.com/electronut/pp/blob/master/ascii/ascii.py
@@ -35,9 +37,9 @@ radioVar = tk.StringVar()
 channelColor = tk.StringVar(value="B")
 
 # Int variable to select Font Size,Char Width & Height
-charHeight = tk.IntVar(value=8)
-charWidth = tk.IntVar(value=4)
-fntSize = tk.IntVar(value=12)
+charHeight = tk.IntVar(value=14)
+charWidth = tk.IntVar(value=6)
+fntSize = tk.IntVar(value=11)
 
 
 def showFileDialog():
@@ -57,12 +59,15 @@ def generate():
 
     # Channel Color
 
-
     # Get List of Character
-    charList=asciiText.get()
+    charList = asciiText.get()
+
+    ht= charHeight.get()
+    wt= charWidth.get()
 
     # Receives list of characters and channel color from string var
-    aimg = prcs.covertImageToAscii(imageFileName.get(), channelColor.get(), 80, scale,charList)
+    aimg = \
+        prcs.covertImageToAscii(imageFileName.get(), channelColor.get(), 80, scale, charList, wt,ht)
     scrolledText.config(font=('Courier', fontTwo))
     scrolledText.delete("1.0", "end")
     previewText.delete("1.0", "end")
@@ -99,7 +104,7 @@ showFileDialogRadio = Radiobutton(
     command=lambda: showFileDialog()).grid(row=0, column=2, pady=14)
 
 # Radio Buttons to Pick Color Channel
-channelColLabel = ttk.Label(frameTwo, text="Select Channel Color for Conversion").grid(row=2,sticky=W)
+channelColLabel = ttk.Label(frameTwo, text="Select Channel Color for Conversion").grid(row=2, sticky=W)
 redRadio = Radiobutton(
     frameTwo,
     value="R",
@@ -133,12 +138,11 @@ fontEntry = ttk.Entry(frameOne, width=2, textvariable=fntSize).grid(row=1, colum
 
 # Widgets to accept set of characters
 listOfCharacters = ttk.Label(frameTwo, text="Input List of Characters to Used for Conversion - Preferably 70").grid(
-    row=0, column=0,pady=10,sticky=W)
+    row=0, column=0, pady=10, sticky=W)
 charListEntry = ttk.Entry(frameTwo, width=60, textvariable=asciiText).grid(row=1, column=0, sticky=EW)
 
-
 hScrollBar = Scrollbar(frameThree, orient='horizontal')
-scrolledText = st.ScrolledText(frameThree,wrap=NONE, xscrollcommand=hScrollBar.set)
+scrolledText = st.ScrolledText(frameThree, wrap=NONE, xscrollcommand=hScrollBar.set)
 
 hScrollBar.config(command=scrolledText.xview)
 

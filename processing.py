@@ -3,7 +3,7 @@ Core Processing Module to convert an RGB image to corresponding Grayscale.
 Use a tile based approach to convert it to an ASCII character.
 A tile composed of collection of Pixels (rows & cols) to be converted to Ascii character
 Instead of converting individual pixel.
-To match the image and font aspect ratio.
+If user specifies tile width and height, they are used othewise, its computed
 
 Using default 80, as columns for ascii art, this helps in better ascii images.
 It's configurable
@@ -40,10 +40,11 @@ def getAverageL(image):
 
 """
 Given Image and its dimensions (rows, cols) returns an m*n list of Images
+
 """
 
 
-def covertImageToAscii(fileName, colorCode, cols, scale, charList):
+def covertImageToAscii(fileName, colorCode, cols, scale, charList, tileWidth,tileHeight):
     # declare globals
     global gscale
 
@@ -65,19 +66,26 @@ def covertImageToAscii(fileName, colorCode, cols, scale, charList):
     # Extract & store dimensions
     W, H = image.size[0], image.size[1]
 
-    print("input image dims: %d x %d" % (W, H))
+    print("Input Image Dimensions: %d x %d" % (W, H))
+    
+    # Select Tile Dimensions
+    if tileWidth > 0:
+        w = tileWidth
+    else:
+        # compute width of tile
+        w = W / cols
 
-    # compute width of tile
-    w = W / cols
-
-    # compute tile height based on aspect ratio and scale
-    h = w / scale
+    if tileHeight > 0:
+        h = tileHeight
+    else:
+        # compute tile height based on aspect ratio and scale
+        h = w / scale
 
     # compute number of rows
     rows = int(H / h)
 
-    print("cols: %d, rows: %d" % (cols, rows))
-    print("tile dims: %d x %d" % (w, h))
+    print("Cols: %d, Rows: %d" % (cols, rows))
+    print("Tile dims: %d x %d" % (w, h))
 
     # check if image size is too small
     if cols > W or rows > H:
@@ -86,7 +94,6 @@ def covertImageToAscii(fileName, colorCode, cols, scale, charList):
 
     # ascii image is a list of character strings
     aimg = []
-
     # generate list of dimensions
     for j in range(rows):
         y1 = int(j * h)
@@ -108,7 +115,6 @@ def covertImageToAscii(fileName, colorCode, cols, scale, charList):
             # correct last tile
             if i == cols - 1:
                 x2 = W
-
             # crop image to extract tile
             img = image.crop((x1, y1, x2, y2))
 
