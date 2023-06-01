@@ -4,12 +4,23 @@ Invokes the processing part, core engine for image processing
 
 It's configurable
 
-For finer details of core processing, please refer to processiing.py
+For finer details of core processing, please refer to processing.py
+We would like to execute imge conversion part in a separate thread, without
+bothering GUI part.
+Since Python does not have a mechanism to return and value from the function being
+executed by thread.
+
+So we had to extend core Thread module and incorporate this functionality in
+a custom thread with instance variable to hold that value and returns it.
+Please CustomThread.py.
+
 
 References :
 http://paulbourke.net/dataformats/asciiart/
 https://afsanchezsa.github.io/vc/docs/workshops/w1_3
 https://github.com/electronut/pp/blob/master/ascii/ascii.py
+https://coderslegacy.com/python/get-return-value-from-thread/
+
 '''
 import os.path
 import tkinter as tk
@@ -18,7 +29,12 @@ from tkinter import ttk, filedialog
 import tkinter.scrolledtext as st
 from tkinter import END
 
+# Threading Support
+from threading import Thread
+import time
+
 import processing as prcs
+import CustomThread as cthread
 
 root = tk.Tk()
 root.title("Isha's Cornucopia")
@@ -31,8 +47,8 @@ root.resizable(False, False)
 
 # Default list of characters to be used, use can provide his own 70 here
 asciiText = tk.StringVar(value="$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. ")
-imageFileName = tk.StringVar(value="")
-asciiFileName = tk.StringVar(value="")
+imageFileName = tk.StringVar(value="guitar.jpg")
+asciiFileName = tk.StringVar(value="ascii_Image.txt")
 radioVar = tk.StringVar()
 channelColor = tk.StringVar(value="B")
 
@@ -59,20 +75,33 @@ def generate():
 
     # Channel Color
 
-    # Get List of Character
+    # Get List of Characters to replace
     charList = asciiText.get()
 
-    ht= charHeight.get()
-    wt= charWidth.get()
+    # Extract height & width of a Tile
+    tileHt = charHeight.get()
+    tileWidth = charWidth.get()
+    output = []
 
     # Receives list of characters and channel color from string var
-    aimg = \
-        prcs.covertImageToAscii(imageFileName.get(), channelColor.get(), 80, scale, charList, wt,ht)
+    processingThread = \
+        cthread.CustomThread(target=prcs.covertImageToAscii,
+               args=(imageFileName.get(), channelColor.get(), 80, scale, charList, tileWidth,
+                     tileHt))
+    start = time.time()
+    # Start Thread
+    processingThread.start()
+
+    # Joins back GUI thread
+    output=processingThread.join()
+    print('Two thread total time: ', time.time() - start)
+
     scrolledText.config(font=('Courier', fontTwo))
     scrolledText.delete("1.0", "end")
     previewText.delete("1.0", "end")
+
     # Explode to line - introduce line break
-    for row in aimg:
+    for row in output:
         scrolledText.insert(END, row + '\n')
         previewText.insert(END, row + '\n')
 

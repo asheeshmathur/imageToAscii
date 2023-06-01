@@ -23,7 +23,7 @@ from PIL import Image
 
 # 70 levels of gray
 gscale = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. "
-
+aimag=[]
 """
 Given PIL Image, computes returns average value average brightness
 """
@@ -126,7 +126,7 @@ def covertImageToAscii(fileName, colorCode, cols, scale, charList, tileWidth,til
 
             # append ascii char to string
             aimg[j] += gsval
-
     # return txt image (row and columns matrix
+
     return aimg
 
