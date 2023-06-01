@@ -159,19 +159,21 @@ blueRadio = Radiobutton(
     value="B",
     text="Blue",
     variable=channelColor).grid(row=1, column=4, sticky=W)
+# Widgets to capture Tile Details
+tileProperties = ttk.Label(frameOne, text="Tile Properties ").place(x=0, y=50)
 
 heightLabel = ttk.Label(frameOne, text="Height")
-heightLabel.grid(row=1, column=0, sticky=W)
-heightEntry = ttk.Entry(frameOne, textvariable=charHeight, width=2).grid(row=1, column=1, sticky=W)
+heightLabel.place(x=95, y=50)
+heightEntry = ttk.Entry(frameOne, textvariable=charHeight, width=2).place(x=145, y=45)
 
 widthLabel = ttk.Label(frameOne, text="Width")
-widthLabel.grid(row=1, column=2, sticky=EW)
+widthLabel.place(x=185, y=50)
 widthEntry = ttk.Entry(frameOne, width=2, textvariable=charWidth)
-widthEntry.grid(row=1, column=3, sticky=W)
+widthEntry.place(x=230, y=45)
 
 fontSize = ttk.Label(frameOne, text="Font Size")
-fontSize.grid(row=1, column=4, sticky=W)
-fontEntry = ttk.Entry(frameOne, width=2, textvariable=fntSize).grid(row=1, column=5,sticky=W)
+fontSize.place(x=270, y=50)
+fontEntry = ttk.Entry(frameOne, width=2, textvariable=fntSize).place(x=330, y=45)
 
 # Widgets to accept set of characters
 listOfCharacters = ttk.Label(frameTwo, text="Input List of Characters to Used for Conversion - Preferably 70").grid(
@@ -184,10 +186,13 @@ scrolledText = st.ScrolledText(frameThree, wrap=NONE, xscrollcommand=hScrollBar.
 hScrollBar.config(command=scrolledText.xview)
 
 hScrollBar.grid(row=1, column=0, sticky=EW, padx=15)
-scrolledText.grid(row=0, column=0, padx=10)
+scrolledText.grid(row=0, column=0, padx=15,sticky=EW)
 # Attach the scrollbar with the text widget
 previewText = st.ScrolledText(frameThree, font=('Courier', 2), width=45, height=30, wrap=NONE)
-previewText.grid(row=0, column=1)
+previewText.grid(row=0, column=1,sticky=E)
+
+previewLabel = ttk.Label(frameThree, text="Small Crisp Preview ").place(x=610,y=200)
+
 # Plan for Labels and entry fields
 
 # Buttons
