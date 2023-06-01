@@ -85,7 +85,7 @@ def generate():
 
     # Receives list of characters and channel color from string var
     processingThread = \
-        cthread.CustomThread(target=prcs.covertImageToAscii,
+        cthread.CustomThread(target=prcs.convertImageToAscii,
                args=(imageFileName.get(), channelColor.get(), 80, scale, charList, tileWidth,
                      tileHt))
     start = time.time()

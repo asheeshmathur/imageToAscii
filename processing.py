@@ -44,7 +44,7 @@ Given Image and its dimensions (rows, cols) returns an m*n list of Images
 """
 
 
-def covertImageToAscii(fileName, colorCode, cols, scale, charList, tileWidth,tileHeight):
+def convertImageToAscii(fileName, colorCode, cols, scale, charList, tileWidth,tileHeight):
     # declare globals
     global gscale
 
@@ -127,6 +127,5 @@ def covertImageToAscii(fileName, colorCode, cols, scale, charList, tileWidth,til
             # append ascii char to string
             aimg[j] += gsval
     # return txt image (row and columns matrix
-
     return aimg
 
