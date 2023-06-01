@@ -49,7 +49,7 @@ root.resizable(False, False)
 asciiText = tk.StringVar(value="$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. ")
 imageFileName = tk.StringVar(value="guitar.jpg")
 asciiFileName = tk.StringVar(value="ascii_Image.txt")
-radioVar = tk.StringVar()
+radioVar = tk.StringVar(value="tb")
 channelColor = tk.StringVar(value="B")
 
 # Int variable to select Font Size,Char Width & Height
@@ -112,6 +112,13 @@ frameTwo = ttk.Frame(root, width=800, height=50, borderwidth=5, relief=tk.GROOVE
 frameThree = ttk.Frame(root, width=650, height=180, borderwidth=5, relief=tk.GROOVE)
 frameFour = ttk.Frame(root, width=800, height=50, borderwidth=5, relief=tk.GROOVE)
 
+# Configure four Rows within frameTwo
+frameTwo.rowconfigure(0, weight=1)
+frameTwo.rowconfigure(1, weight=1)
+frameTwo.rowconfigure(2, weight=1)
+
+
+
 # Radio Buttons to select entry for image path or file dialog
 selectImage = Label(frameOne, text="Select Valid Image (RBG)").grid(row=0, column=0, pady=14)
 entry = tk.Entry(frameOne, textvariable=imageFileName)
@@ -120,7 +127,7 @@ entry = tk.Entry(frameOne, textvariable=imageFileName)
 entryRadio = Radiobutton(
     frameOne,
     value="tb",
-    text="Entry",
+    text="Image File Name",
     variable=radioVar,
     command=lambda: entry.grid(row=0, column=4))
 entryRadio.grid(row=0, column=1, pady=14)
@@ -128,47 +135,48 @@ entryRadio.grid(row=0, column=1, pady=14)
 showFileDialogRadio = Radiobutton(
     frameOne,
     value="fd",
-    text="via File Dialog",
+    text="Select via File Dialog",
     variable=radioVar,
     command=lambda: showFileDialog()).grid(row=0, column=2, pady=14)
 
 # Radio Buttons to Pick Color Channel
-channelColLabel = ttk.Label(frameTwo, text="Select Channel Color for Conversion").grid(row=2, sticky=W)
+channelColLabel = ttk.Label(frameTwo, text="Channel Color To Use  ").grid(row=1,column=1,padx=10,sticky=E)
 redRadio = Radiobutton(
     frameTwo,
     value="R",
     text="Red",
-    variable=channelColor).grid(row=3, column=0, sticky=W, padx=5)
+    variable=channelColor).grid(row=1, column=2
+                                ,sticky=W)
 
 greenRadio = Radiobutton(
     frameTwo,
     value="G",
     text="Green",
-    variable=channelColor).grid(row=3, column=1, sticky=W, padx=5)
+    variable=channelColor).grid(row=1, column=3,sticky=W)
 
 blueRadio = Radiobutton(
     frameTwo,
     value="B",
     text="Blue",
-    variable=channelColor).grid(row=3, column=2, sticky=E, padx=5)
+    variable=channelColor).grid(row=1, column=4, sticky=W)
 
 heightLabel = ttk.Label(frameOne, text="Height")
 heightLabel.grid(row=1, column=0, sticky=W)
 heightEntry = ttk.Entry(frameOne, textvariable=charHeight, width=2).grid(row=1, column=1, sticky=W)
 
 widthLabel = ttk.Label(frameOne, text="Width")
-widthLabel.grid(row=1, column=2, sticky=W)
+widthLabel.grid(row=1, column=2, sticky=EW)
 widthEntry = ttk.Entry(frameOne, width=2, textvariable=charWidth)
 widthEntry.grid(row=1, column=3, sticky=W)
 
 fontSize = ttk.Label(frameOne, text="Font Size")
 fontSize.grid(row=1, column=4, sticky=W)
-fontEntry = ttk.Entry(frameOne, width=2, textvariable=fntSize).grid(row=1, column=5)
+fontEntry = ttk.Entry(frameOne, width=2, textvariable=fntSize).grid(row=1, column=5,sticky=W)
 
 # Widgets to accept set of characters
 listOfCharacters = ttk.Label(frameTwo, text="Input List of Characters to Used for Conversion - Preferably 70").grid(
-    row=0, column=0, pady=10, sticky=W)
-charListEntry = ttk.Entry(frameTwo, width=60, textvariable=asciiText).grid(row=1, column=0, sticky=EW)
+    row=0, column=0, sticky=W)
+charListEntry = ttk.Entry(frameTwo, width=50, textvariable=asciiText).grid(row=1, column=0, sticky=W)
 
 hScrollBar = Scrollbar(frameThree, orient='horizontal')
 scrolledText = st.ScrolledText(frameThree, wrap=NONE, xscrollcommand=hScrollBar.set)
@@ -185,8 +193,8 @@ previewText.grid(row=0, column=1)
 # Buttons
 generateBtn = Button(frameFour, text="Generate", command=lambda: generate())
 saveFileBtn = Button(frameFour, text="Save To", command=lambda: saveTo())
-generateBtn.pack(side=LEFT, pady=5)
-saveFileBtn.pack(side=LEFT, pady=5)
+generateBtn.place(x=325, y=5)
+saveFileBtn.place(x= 420, y=5)
 # Pack these frames
 frameOne.pack(fill=BOTH, expand=True)
 frameTwo.pack(fill=BOTH, expand=True)
