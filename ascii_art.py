@@ -1,19 +1,25 @@
 '''
-GUI for  RGB image to corresponding Grayscale.
-Invokes the processing part, core engine for image processing
+GUI for  RGB image to corresponding Grayscale. UI has been stacked in layers
+to segregate functionality.
 
-It's configurable
+For crisp preview of ASCII Image, a small window is  added.
 
-For finer details of core processing, please refer to processing.py
-We would like to execute imge conversion part in a separate thread, without
-bothering GUI part.
+Invokes the processing part, core engine for image processing and custom threading class,
+CustomThread, because we would like to threaded function to return values to be displayed by UI.
+Since Python does not have a mechanism to return and value from the function being
+executed by thread.
+
+This does not impact UI thread, while conversion is done in separate thread.
+
+For finer details of core image conversion  process, please refer to processing.py and for threading
+model refer to CustomThread.py.
+
 Since Python does not have a mechanism to return and value from the function being
 executed by thread.
 
 So we had to extend core Thread module and incorporate this functionality in
 a custom thread with instance variable to hold that value and returns it.
 Please CustomThread.py.
-
 
 References :
 http://paulbourke.net/dataformats/asciiart/
@@ -22,7 +28,6 @@ https://github.com/electronut/pp/blob/master/ascii/ascii.py
 https://coderslegacy.com/python/get-return-value-from-thread/
 
 '''
-import os.path
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk, filedialog
@@ -30,32 +35,36 @@ import tkinter.scrolledtext as st
 from tkinter import END
 
 # Threading Support
-from threading import Thread
+import CustomThread as cthread
+
 import time
 
 import processing as prcs
-import CustomThread as cthread
 
 root = tk.Tk()
 root.title("Isha's Cornucopia")
+
 # Set the geometry
 root.geometry("900x650")
+
 # Set Resizable false
 root.resizable(False, False)
 
-# List of Text Char to drive application
-
-# Default list of characters to be used, use can provide his own 70 here
+# Default list of characters to be used, user can provide his own,  70 characters are recommended
 asciiText = tk.StringVar(value="$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. ")
 imageFileName = tk.StringVar(value="guitar.jpg")
 asciiFileName = tk.StringVar(value="ascii_Image.txt")
 radioVar = tk.StringVar(value="tb")
 channelColor = tk.StringVar(value="B")
 
-# Int variable to select Font Size,Char Width & Height
+# Int variable to select Font Size,Tile Width & Height
 charHeight = tk.IntVar(value=14)
 charWidth = tk.IntVar(value=6)
 fntSize = tk.IntVar(value=11)
+
+'''
+Displays file dialog to select image for conversions
+'''
 
 
 def showFileDialog():
@@ -65,6 +74,11 @@ def showFileDialog():
     imageFileName.set(fileName)
 
 
+'''
+Invokes processing module to convert image to Ascii Characters and renders it
+'''
+
+
 def generate():
     global scrolledText, imageFileName
     # Check for valid image file name
@@ -72,8 +86,6 @@ def generate():
     scale = 0.43
     # Get Selected Font Size
     fontTwo = fntSize.get()
-
-    # Channel Color
 
     # Get List of Characters to replace
     charList = asciiText.get()
@@ -86,15 +98,15 @@ def generate():
     # Receives list of characters and channel color from string var
     processingThread = \
         cthread.CustomThread(target=prcs.convertImageToAscii,
-               args=(imageFileName.get(), channelColor.get(), 80, scale, charList, tileWidth,
-                     tileHt))
+                             args=(imageFileName.get(), channelColor.get(), 80, scale, charList, tileWidth,
+                                   tileHt))
     start = time.time()
     # Start Thread
     processingThread.start()
 
     # Joins back GUI thread
-    output=processingThread.join()
-    print('Two thread total time: ', time.time() - start)
+    output = processingThread.join()
+    print('Thread total time: ', time.time() - start)
 
     scrolledText.config(font=('Courier', fontTwo))
     scrolledText.delete("1.0", "end")
@@ -110,14 +122,12 @@ def generate():
 frameOne = ttk.Frame(root, width=800, height=20, borderwidth=5, relief=tk.GROOVE)
 frameTwo = ttk.Frame(root, width=800, height=50, borderwidth=5, relief=tk.GROOVE)
 frameThree = ttk.Frame(root, width=650, height=180, borderwidth=5, relief=tk.GROOVE)
-frameFour = ttk.Frame(root, width=800, height=50, borderwidth=5, relief=tk.GROOVE)
+frameFour = ttk.Frame(root, width=800, height=20, borderwidth=5, relief=tk.GROOVE)
 
 # Configure four Rows within frameTwo
 frameTwo.rowconfigure(0, weight=1)
 frameTwo.rowconfigure(1, weight=1)
 frameTwo.rowconfigure(2, weight=1)
-
-
 
 # Radio Buttons to select entry for image path or file dialog
 selectImage = Label(frameOne, text="Select Valid Image (RBG)").grid(row=0, column=0, pady=14)
@@ -140,19 +150,19 @@ showFileDialogRadio = Radiobutton(
     command=lambda: showFileDialog()).grid(row=0, column=2, pady=14)
 
 # Radio Buttons to Pick Color Channel
-channelColLabel = ttk.Label(frameTwo, text="Channel Color To Use  ").grid(row=1,column=1,padx=10,sticky=E)
+channelColLabel = ttk.Label(frameTwo, text="Channel Color To Use  ").grid(row=1, column=1, padx=10, sticky=E)
 redRadio = Radiobutton(
     frameTwo,
     value="R",
     text="Red",
     variable=channelColor).grid(row=1, column=2
-                                ,sticky=W)
+                                , sticky=W)
 
 greenRadio = Radiobutton(
     frameTwo,
     value="G",
     text="Green",
-    variable=channelColor).grid(row=1, column=3,sticky=W)
+    variable=channelColor).grid(row=1, column=3, sticky=W)
 
 blueRadio = Radiobutton(
     frameTwo,
@@ -186,12 +196,12 @@ scrolledText = st.ScrolledText(frameThree, wrap=NONE, xscrollcommand=hScrollBar.
 hScrollBar.config(command=scrolledText.xview)
 
 hScrollBar.grid(row=1, column=0, sticky=EW, padx=15)
-scrolledText.grid(row=0, column=0, padx=15,sticky=EW)
+scrolledText.grid(row=0, column=0, padx=15, sticky=EW)
 # Attach the scrollbar with the text widget
 previewText = st.ScrolledText(frameThree, font=('Courier', 2), width=45, height=30, wrap=NONE)
-previewText.grid(row=0, column=1,sticky=E)
+previewText.grid(row=0, column=1, sticky=E)
 
-previewLabel = ttk.Label(frameThree, text="Small Crisp Preview ").place(x=610,y=200)
+previewLabel = ttk.Label(frameThree, text="Small Crisp Preview ").place(x=610, y=200)
 
 # Plan for Labels and entry fields
 
@@ -199,12 +209,12 @@ previewLabel = ttk.Label(frameThree, text="Small Crisp Preview ").place(x=610,y=
 generateBtn = Button(frameFour, text="Generate", command=lambda: generate())
 saveFileBtn = Button(frameFour, text="Save To", command=lambda: saveTo())
 generateBtn.place(x=325, y=5)
-saveFileBtn.place(x= 420, y=5)
+saveFileBtn.place(x=420, y=5)
 # Pack these frames
 frameOne.pack(fill=BOTH, expand=True)
 frameTwo.pack(fill=BOTH, expand=True)
-frameThree.pack(fill=BOTH, expand=True)
 frameFour.pack(fill=BOTH, expand=True)
+frameThree.pack(fill=BOTH, expand=True)
 
 
 def saveTo():
