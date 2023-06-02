@@ -42,7 +42,7 @@ import time
 import processing as prcs
 
 root = tk.Tk()
-root.title("Isha's Cornucopia")
+root.title("Image To ASCII Art Conversion")
 
 # Set the geometry
 root.geometry("900x650")
@@ -130,7 +130,7 @@ frameTwo.rowconfigure(1, weight=1)
 frameTwo.rowconfigure(2, weight=1)
 
 # Radio Buttons to select entry for image path or file dialog
-selectImage = Label(frameOne, text="Select Valid Image (RBG)").grid(row=0, column=0, pady=14)
+selectImage = Label(frameOne, text="Select Valid Image (RGB)").grid(row=0, column=0, pady=14)
 entry = tk.Entry(frameOne, textvariable=imageFileName)
 
 # Two Radio Buttons to select source of image
