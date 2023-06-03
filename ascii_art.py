@@ -34,6 +34,7 @@ import time
 
 import processing as prcs
 
+# Core Global Variables
 root = tk.Tk()
 root.title("Image To ASCII Art Conversion")
 
@@ -162,6 +163,8 @@ blueRadio = Radiobutton(
     value="B",
     text="Blue",
     variable=channelColor).grid(row=1, column=4, sticky=W)
+    
+
 # Widgets to capture Tile Details
 tileProperties = ttk.Label(frameOne, text="Tile Properties ").place(x=0, y=50)
 
@@ -210,6 +213,11 @@ frameTwo.pack(fill=BOTH, expand=True)
 frameFour.pack(fill=BOTH, expand=True)
 frameThree.pack(fill=BOTH, expand=True)
 
+'''
+Function to save ASCII characters generated to a text file
+
+'''
+
 
 def saveTo():
     global scrolledText, imageFileName
@@ -220,7 +228,7 @@ def saveTo():
 
 
 '''
-Rendering of ascii art display
+Renders ascii art in a scrollable text widget
 '''
 
 
@@ -228,11 +236,16 @@ def asciiArt():
     # Start Main Loop
     root.mainloop()
 
+'''
+Main Method to trigger GUI
+'''
+
 
 def main():
     global root
     asciiArt()
-    root.mainloop()
 
+# Check and invode main
+if __name__ == "__main__":
+    main()
 
-main()
