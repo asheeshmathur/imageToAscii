@@ -182,7 +182,7 @@ fontSize.place(x=270, y=50)
 fontEntry = ttk.Entry(frameOne, width=2, textvariable=fntSize).place(x=330, y=45)
 
 # Widgets to accept set of characters for conversion
-listOfCharacters = ttk.Label(frameTwo, text="List of ASCII Characters - Ensure 70 ").grid(
+listOfCharacters = ttk.Label(frameTwo, text="List of ASCII Characters - Ensure 70 for Good Results ").grid(
     row=0, column=0, sticky=W)
 charListEntry = ttk.Entry(frameTwo, width=50, textvariable=asciiText).grid(row=1, column=0, sticky=W)
 
