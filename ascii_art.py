@@ -42,7 +42,7 @@ root.title("Image To ASCII Art Conversion")
 root.geometry("900x650")
 
 # Set Resizable false
-root.resizable(False, False)
+# root.resizable(False, False)
 
 # Default list of characters to be used, user can provide his own,  70 characters are recommended
 asciiText = tk.StringVar(value="$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. ")
@@ -92,7 +92,7 @@ def generate():
     # Receives list of characters and channel color from string var
     processingThread = \
         cthread.CustomThread(target=prcs.convertImageToAscii,
-                             args=(imageFileName.get(), channelColor.get(), 80, scale, charList, tileWidth,
+                             args=(imageFileName.get(), channelColor.get(), 90, scale, charList, tileWidth,
                                    tileHt))
     start = time.time()
     # Start Thread
@@ -182,12 +182,12 @@ fontSize.place(x=270, y=50)
 fontEntry = ttk.Entry(frameOne, width=2, textvariable=fntSize).place(x=330, y=45)
 
 # Widgets to accept set of characters for conversion
-listOfCharacters = ttk.Label(frameTwo, text="Input List of Characters to Used for Conversion - Preferably 70").grid(
+listOfCharacters = ttk.Label(frameTwo, text="List of ASCII Characters - Ensure 70 ").grid(
     row=0, column=0, sticky=W)
 charListEntry = ttk.Entry(frameTwo, width=50, textvariable=asciiText).grid(row=1, column=0, sticky=W)
 
 hScrollBar = Scrollbar(frameThree, orient='horizontal')
-scrolledText = st.ScrolledText(frameThree, wrap=NONE, width=95,xscrollcommand=hScrollBar.set)
+scrolledText = st.ScrolledText(frameThree, wrap=NONE,xscrollcommand=hScrollBar.set)
 
 hScrollBar.config(command=scrolledText.xview)
 
@@ -198,8 +198,8 @@ scrolledText.grid(row=0, column=0, padx=15, sticky=EW)
 previewText = st.ScrolledText(frameThree, font=('Courier', 2), width=45, height=30, wrap=NONE)
 previewText.grid(row=0, column=1, sticky=E)
 
-previewLabel = ttk.Label(frameThree, text=" Crisp Preview ").place(x=720, y=200)
-viewLabel = ttk.Label(frameThree, text="Crisp Preview").place(x=720, y=200)
+#previewLabel = ttk.Label(frameThree, text=" Crisp Preview ").place(x=720, y=200)
+#viewLabel = ttk.Label(frameThree, text="Crisp Preview").place(x=720, y=200)
 
 # Generate and Save Buttons
 generateBtn = Button(frameFour, text="Generate", command=lambda: generate())

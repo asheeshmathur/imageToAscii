@@ -47,7 +47,8 @@ Given Image and its dimensions (rows, cols) returns an m*n list of Images
 def convertImageToAscii(fileName, colorCode, cols, scale, charList, tileWidth,tileHeight):
     # declare globals
     global gscale
-
+    l =len(charList)
+    print("No. of Characters Provided ",l)
     # open image and convert to grayscale based on color choice
     # Check & Split base on channels
     tempImage = Image.open(fileName)
@@ -122,7 +123,7 @@ def convertImageToAscii(fileName, colorCode, cols, scale, charList, tileWidth,ti
             avg = int(getAverageL(img))
 
             # look up ascii char
-            gsval = charList[int((avg * 69) / 255)]
+            gsval = charList[int((avg * l-1) / 255)]
 
             # append ascii char to string
             aimg[j] += gsval
