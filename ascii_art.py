@@ -1,31 +1,24 @@
 '''
-GUI for  RGB image to corresponding Grayscale. UI has been stacked in layers
-to segregate functionality.
+GUI for creating an ASCII Art of a RGB image, UI has been stacked in layers
+to segregate functionality & look good and easy to operate.
 
-For crisp preview of ASCII Image, a small window is  added.
+For crisp preview of ASCII Image, a small previw window has been also been added.
 
-Invokes the processing part, core engine for image processing and custom threading class,
-CustomThread, because we would like to threaded function to return values to be displayed by UI.
+UI accepts varios inputs and passes it to the processing module (processing.py),the core engine for image transformation.
+To execute processing without blocking UI a  custom threading class has been introdeuced (CustomThread.py)
+We would like to threaded function to return values to be displayed by UI.
 Since Python does not have a mechanism to return and value from the function being
 executed by thread.
 
-This does not impact UI thread, while conversion is done in separate thread.
-
-For finer details of core image conversion  process, please refer to processing.py and for threading
-model refer to CustomThread.py.
-
-Since Python does not have a mechanism to return and value from the function being
-executed by thread.
-
-So we had to extend core Thread module and incorporate this functionality in
-a custom thread with instance variable to hold that value and returns it.
-Please CustomThread.py.
+CustomThread class introcues this support by way of extending Thread class.
+Refer to CustoThread class for more details, though its not 100% fail safe
 
 References :
 http://paulbourke.net/dataformats/asciiart/
 https://afsanchezsa.github.io/vc/docs/workshops/w1_3
 https://github.com/electronut/pp/blob/master/ascii/ascii.py
 https://coderslegacy.com/python/get-return-value-from-thread/
+
 
 '''
 import tkinter as tk
